@@ -38,7 +38,7 @@ Place all .csv files into one folder, then:
          conda activate NORenv		
 	 python manual_DI_format.py -o manual_output.xlsx -p -v #replace `manual_output` with desired filename
 
-NOTE: Excel sheet names in the resulting manual_output.xlsx will mirror .csv filenames. Since Excel limits sheet names to 31 characters, shorten filename if necessary.
+NOTE: Excel sheet names in the resulting `manual_output.xlsx` will mirror .csv filenames. Since Excel limits sheet names to 31 characters, shorten filename if necessary.
 
 ---
 
@@ -71,7 +71,7 @@ After running BehaviorDEPOT:
     2. Add source videos to corresponding *_analyzed folders
     3. Remove `_analyzed` from all subfolder names.
 
-NOTE: `_Obj1` / `_Obj2`  must be appended onto subfolder names before BehaviorDEPOT analysis. Excel sheet names in the resulting `compiled_behavior.xlsx` and `compiled_kinematics.xlsx` files will copied from folder names. 
+NOTE: `_Obj1` / `_Obj2`  should be appended onto subfolder names before running BehaviorDEPOT analysis in order to ensure smooth execution of below scripts. Excel sheet names in the resulting `compiled_behavior.xlsx` and `compiled_kinematics.xlsx` files will be copied from folder names. 
 Since Excel limits sheet names to 31 characters, shorten folder names if necessary.
 
 ### 3.2. Extract Behavior & Kinematics Data from .mat data files
@@ -168,3 +168,4 @@ NOTE: The behavior labels were sized to fit videos with dimensions of 380x380. I
     4.2.a: modify crop dimensions to reflect changes in 4.1.
 
 
+Please cite "A protocol to assess time-of-day-dependent learning and memory in mice using the Novel Object Recognition test" (Update when published)
