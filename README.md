@@ -11,7 +11,8 @@ Both scoring methods require a Python environment with specific packages install
     1. Download and install miniconda 
     2. Open Terminal (macOS/Linux) or Anaconda Prompt (Windows)
     3. To create and activate new Python environment to be used for analysis: 
-         conda create -n NORenv python=3.10										 conda activate NORenv
+         conda create -n NORenv python=3.10
+         conda activate NORenv
     4. Install packages: 
          conda install pandas pillow ffmpeg
          pip install openpyxl av==11
@@ -67,33 +68,29 @@ NOTE: Excel sheet names in the resulting manual_output.xlsx will mirror .csv fil
 
 After running BehaviorDEPOT:
     1. Consolidate all *_analyzed folders into one parent directory.
-    2. Duplicate parent directory.
-    3. Rename directories and subfolders:
-       - Remove `_analyzed` from all subfolder names.
-       - In 1st directory: append `_Obj1` to all subfolders, rename directory to `Obj1`.
-       - In 2nd directory: append `_Obj2` to all subfolders, rename directory to `Obj2`.
+    2. Add source videos to corresponding *_analyzed folders
+    3. Remove `_analyzed` from all subfolder names.
 
-NOTE: Excel sheet names in the resulting `compiled_behavior.xlsx` and `compiled_kinematics.xlsx` files will copied from folder names. 
+NOTE: `_Obj1` / `_Obj2`  must be appended onto subfolder names before BehaviorDEPOT analysis. Excel sheet names in the resulting `compiled_behavior.xlsx` and `compiled_kinematics.xlsx` files will copied from folder names. 
 Since Excel limits sheet names to 31 characters, shorten folder names if necessary.
 
 ### 3.2. Extract Behavior & Kinematics Data from .mat data files
 
-    1. Save `machine_extract_behavior_kinematics.m` MATLAB code in both `Obj1` and `Obj2` directories.
-    2. Open MATLAB, locate MATLAB File Explorer and find `Obj1` directory 
+    1. Save `machine_extract_behavior_kinematics.m` MATLAB code in directory containing BehaviorDEPOT-analyzed data.
+    2. Open MATLAB, locate MATLAB File Explorer and find analyzed directory 
     3. Right-click directory → Add to Path → Selected Folders and Subfolders
-    4. Run the script by typing the following into MATLAB command window, replace `parentDir` with the full path        of `Obj1` directory:  
+    4. Run the script by typing the following into MATLAB command window, replace `parentDir` with the full path of analyzed directory:  
 	     machine_extract_behavior_kinematics(parentDir)
-    5. Select `Obj1` directory when prompted, a completion message will be displayed upon successful execution          of script.
-    6. Repeat steps 2 through 5 with remaining `Obj2` directory
+    5. Select analyzed directory when prompted, a completion message will be displayed upon successful execution of script.
 
-This generates `compiled_behavior.xlsx` (containing frame numbers of all object exploration bouts for objects 1 & 2) and `compiled_kinematics.xlsx` (containing extracted total distance traveled, average velocities, and average accelerations from head and midback smoothed keypoint-tracking data. If other or additional data points are to be extracted modify text under `T_kinematics = table()` within `extract_behavior_kinematics.m` code.
+This generates `compiled_behavior.xlsx` (containing frame numbers of all object exploration bouts for objects 1 & 2) and `compiled_kinematics.xlsx` (containing extracted total distance traveled, average velocities, and average accelerations from head and midback smoothed keypoint-tracking data) Excel files. If other or additional data points are to be extracted modify text under `T_kinematics = table()` within `extract_behavior_kinematics.m` code.
 
 ### 3.3. Format & Calculate DI
 
 #### 3.3.1. Combine Obj1 and Obj2 Data 
 
     1. Save `machine_DI_format.py` in same directory as `compiled_behavior.xlsx`.
-    2. Open Terminal/Anaconda Prompt and enter the following (replace '/Path/' sections with correct full Paths         of input/output files):
+    2. Open Terminal/Anaconda Prompt and enter the following (replace '/Path/' sections with correct full paths of input/output files):
          cd /Path/to/compiled_behavior.xlsx
          conda activate NORenv
       	 python machine_DI_format.py 
@@ -130,14 +127,15 @@ If machine-scored results differ from manual scoring this is a great place to st
     - Video Processing
     - Image Processing
 * `Obj1` and `Obj2` BehaviorDEPOT-analyzed directories with source videos in all subfolders
+  NOTE: The same folders from step 3 can be used for this step, seperate so that Obj1/Obj2 data is segregated
 
 ### 4.1. Create Labeled Videos
 
     1. Save `machine_processAllVideosObj1.m` MATLAB code within the `Obj1` directory.
     2. Add `Obj1` directory to MATLAB Path (as done in 3.2.2 - 3.2.3).
-    3. Open `Obj1` directory in File Explorer and type following into MATLAB command window, replace `parentDir`        with the full path of `Obj1` directory:
+    3. Open `Obj1` directory in File Explorer and type following into MATLAB command window, replace `parentDir` with the full path of `Obj1` directory:
 	       machine_processAllVideosObj1(parentDir)
-    4. Repeat steps 4.1.1 - 4.1.3, this time saving `machine_processAllVideosObj2.m` MATLAB code in `Obj2`              directory.
+    4. Repeat steps 4.1.1 - 4.1.3, this time saving `machine_processAllVideosObj2.m` MATLAB code in `Obj2` directory.
 
 This step will add `Explore_Obj1`/ `Explore_Obj2` upper corner labels over video frames whenever object exploration was detected.
 
@@ -158,14 +156,15 @@ This will create a new folder within present working directory that contains cro
 
 #### 4.2.b. Overlay Cropped `Explore_Obj2` Labels onto `Explore_Obj1` Videos
 
-    1. Combine cropped `Explore_Obj2` labels and `Explore_Obj1`-labeled videos into single directory, save              `machine_overlay_object_on_scene.m` MATLAB code in same directory.
+    1. Combine cropped `Explore_Obj2` labels and `Explore_Obj1`-labeled videos into single directory, save `machine_overlay_object_on_scene.m` MATLAB code in same directory.
     2. Open MATLAB and add `Explore_Obj#`-labeled video directory to MATLAB Path (as done in 3.2.2 - 3.2.3).
-    3. Enter following command into MATLAB command window, replace `parentDir` with full Path of `Explore_Obj#`-        labeled video directory: 
+    3. Enter following command into MATLAB command window, replace `parentDir` with full path of `Explore_Obj#`-labeled video directory: 
          machine_overlay_object_on_scene(parentDir)
 
 A message will confirm when the overlay is complete
+
 NOTE: The behavior labels were sized to fit videos with dimensions of 380x380. If your video dimensions differ, steps 4.1 and 4.2.a will vary slightly:
-    4.1: within `machine_processAllVideosObj#.m` codes modify `FontSize` and x-and-y coordinates listed within           `frame = insertText` to modify label size and position respectively. 
-    4.2.a: modify crop dimensions used to reflect changes in 4.1.
+    4.1: within `machine_processAllVideosObj#.m` codes modify `FontSize` and x-and-y coordinates listed within `frame = insertText` to modify label size and position respectively. 
+    4.2.a: modify crop dimensions to reflect changes in 4.1.
 
 
