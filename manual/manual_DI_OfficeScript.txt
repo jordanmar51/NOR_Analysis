@@ -1,0 +1,143 @@
+function main(workbook: ExcelScript.Workbook) {
+    const sheets = workbook.getWorksheets();
+    
+    // Process each worksheet (except the consolidated data sheet)
+    sheets.forEach(sheet => {
+        console.log(`Processing sheet: ${sheet.getName()}`);
+        
+        // Skip the consolidated data sheet to avoid processing it
+        if (sheet.getName() === "Consolidated Data") return;
+        
+        // STEP 1: Calculate Object 1 Exploration Time
+        // Find the last row with data in column A (Object 1 timestamps)
+        const lastRowObj1 = sheet.getRange("A:A").getUsedRange()?.getRowCount() || 1;
+        
+        // Set up header for Object 1 bout duration calculations
+        sheet.getRange("D1").setValue("Obj1_Explore");
+        
+        // Calculate bout durations: difference between consecutive timestamps
+        // Loop through pairs of timestamps (rows 2,3 then 4,5 etc.)
+        for (let i = 2; i < lastRowObj1; i += 2) {
+            // Formula calculates: end time - start time for each bout
+            sheet.getRange(`D${i + 1}`).setFormula(`=A${i + 1}-A${i}`);
+        }
+        
+        // Create headers and sum all Object 1 exploration times dynamically
+        const obj1SumRange = `D3:D${lastRowObj1}`;
+        sheet.getRange("E1:F1").setFormulas([
+            ["Obj1_Explore_Time", `=SUM(${obj1SumRange})`]
+        ]);
+        
+        // STEP 2: Calculate Object 2 Exploration Time (same process for column H)
+        const lastRowObj2 = sheet.getRange("H:H").getUsedRange()?.getRowCount() || 1;
+        
+        sheet.getRange("K1").setValue("Obj2_Explore_Time");
+        
+        // Calculate Object 2 bout durations
+        for (let i = 2; i < lastRowObj2; i += 2) {
+            sheet.getRange(`K${i + 1}`).setFormula(`=H${i + 1}-H${i}`);
+        }
+        
+        // Sum all Object 2 exploration times dynamically
+        const obj2SumRange = `K3:K${lastRowObj2}`;
+        sheet.getRange("L1:M1").setFormulas([
+            ["Obj2_Explore_Time", `=SUM(${obj2SumRange})`]
+        ]);
+        
+        // STEP 3: Create Summary Table with Discrimination Index (DI)
+        // Set up labels for the summary table
+        sheet.getRange("E10").setValue("Obj1 Exploration");
+        sheet.getRange("E11").setValue("Obj2 Exploration");
+        sheet.getRange("E12").setValue("TET");  // Total Exploration Time
+        sheet.getRange("E13").setValue("DI");   // Discrimination Index
+        
+        // Calculate summary values
+        sheet.getRange("F10").setFormula("=ROUND(F1,1)");        // Obj1 time (rounded)
+        sheet.getRange("F11").setFormula("=ROUND(M1,1)");        // Obj2 time (rounded)
+        sheet.getRange("F12").setFormula("=SUM(F10:F11)");       // Total exploration time
+        sheet.getRange("F13").setFormula("=ROUND(((F10-F11)/F12),2)"); // DI = (Obj1-Obj2)/Total
+        
+        // STEP 4: Format the summary table with borders
+        const summaryRange = sheet.getRange("E10:F13");
+        const format = summaryRange.getFormat();
+        
+        // Add outer borders
+        const outerBorders = [
+            ExcelScript.BorderIndex.edgeLeft,
+            ExcelScript.BorderIndex.edgeTop,
+            ExcelScript.BorderIndex.edgeBottom,
+            ExcelScript.BorderIndex.edgeRight
+        ];
+        
+        outerBorders.forEach(borderIndex => {
+            format.getRangeBorder(borderIndex).setStyle(ExcelScript.BorderLineStyle.continuous);
+            format.getRangeBorder(borderIndex).setWeight(ExcelScript.BorderWeight.medium);
+        });
+        
+        // Remove diagonal and inner borders for clean appearance
+        format.getRangeBorder(ExcelScript.BorderIndex.diagonalDown).setStyle(ExcelScript.BorderLineStyle.none);
+        format.getRangeBorder(ExcelScript.BorderIndex.diagonalUp).setStyle(ExcelScript.BorderLineStyle.none);
+        format.getRangeBorder(ExcelScript.BorderIndex.insideVertical).setStyle(ExcelScript.BorderLineStyle.none);
+        format.getRangeBorder(ExcelScript.BorderIndex.insideHorizontal).setStyle(ExcelScript.BorderLineStyle.none);
+    });
+    
+    // STEP 5: Create Consolidated Summary Sheet
+    // Remove existing consolidated sheet if it exists
+    try {
+        let existingSheet = workbook.getWorksheet("Consolidated Data");
+        if (existingSheet) {
+            existingSheet.delete();
+        }
+    } catch (error) {
+        // Sheet doesn't exist, continue
+    }
+    
+    // Create new consolidated sheet with headers
+    let consolidatedSheet = workbook.addWorksheet("Consolidated Data");
+    consolidatedSheet.getRange("A1:B1").setValues([["Sheet Name", "Values"]]);
+    
+    // Copy summary data from each sheet to consolidated sheet
+    let currentRow = 2;
+    sheets.forEach(sheet => {
+        if (sheet.getName() !== "Consolidated Data") {
+            // Add sheet name
+            consolidatedSheet.getRange(`A${currentRow}`).setValue(sheet.getName());
+            currentRow++;
+            
+            // Copy the 4-row summary table (E10:F13)
+            const summaryData = sheet.getRange("E10:F13").getValues();
+            consolidatedSheet.getRange(`A${currentRow}:B${currentRow + 3}`).setValues(summaryData);
+            currentRow += 4;
+            
+            // Add blank row for separation
+            currentRow++;
+        }
+    });
+    
+    // Format the consolidated sheet header
+    let headerRange = consolidatedSheet.getRange("A1:B1");
+    headerRange.getFormat().getFill().setColor("#D3D3D3");  // Light gray background
+    headerRange.getFormat().getFont().setBold(true);
+    
+    console.log("Processing completed for all sheets");
+}
+
+/* 
+SCRIPT PURPOSE:
+This script analyzes exploration behavior data by:
+1. Calculating bout durations for two objects from timestamp data
+2. Computing total exploration times and discrimination index
+3. Creating a formatted summary table on each sheet
+4. Consolidating all results into a single summary sheet
+
+DATA STRUCTURE ASSUMPTIONS:
+- Column A: Object 1 timestamps (pairs: start/end, start/end, etc.)
+- Column H: Object 2 timestamps (pairs: start/end, start/end, etc.)
+- Timestamps are in consecutive rows (row 2&3 = bout 1, row 4&5 = bout 2, etc.)
+
+DISCRIMINATION INDEX (DI):
+- Formula: (Object1_Time - Object2_Time) / Total_Exploration_Time
+- Positive values indicate preference for Object 1
+- Negative values indicate preference for Object 2
+- Values range from -1 to +1
+*/
