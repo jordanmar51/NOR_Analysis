@@ -32,6 +32,7 @@ When required, this environment will be referred to as `NORenv` from this point 
 ### 2.1. Compile CSV Files & Format DI Data
 
 Place all .csv files into one folder, then:
+
     1. Save `manual_DI_format.py` into directory containing .csv files.
     2. Open Terminal/Anaconda Prompt and enter the following:
        	 cd /Path/to/csv_folder #replace /Path with full path of .csv-containing directory
@@ -67,11 +68,13 @@ NOTE: Excel sheet names in the resulting `manual_output.xlsx` will mirror .csv f
 ### 3.1. Prepare Analysis Folders
 
 After running BehaviorDEPOT:
+
     1. Consolidate all *_analyzed folders into one parent directory.
     2. Add source videos to corresponding *_analyzed folders
     3. Remove `_analyzed` from all subfolder names.
 
-NOTE: `_Obj1` / `_Obj2`  should be appended onto subfolder names before running BehaviorDEPOT analysis in order to ensure smooth execution of below scripts. Excel sheet names in the resulting `compiled_behavior.xlsx` and `compiled_kinematics.xlsx` files will be copied from folder names. 
+NOTE: `_Obj1` / `_Obj2`  should be appended onto subfolder names before running BehaviorDEPOT analysis in order to ensure smooth execution of below scripts. 
+Excel sheet names in the resulting `compiled_behavior.xlsx` and `compiled_kinematics.xlsx` files will be copied from folder names. 
 Since Excel limits sheet names to 31 characters, shorten folder names if necessary.
 
 ### 3.2. Extract Behavior & Kinematics Data from .mat data files
@@ -101,17 +104,17 @@ This generates `compiled_behavior.xlsx` (containing frame numbers of all object 
 
     1. Open output_file.xlsx in Excel
     2. Go to the Automate tab → Click New Script in Scripting Tools section
-    3. Clear editor of all contents, copy and paste the contents of `machine_OfficeScript_for_DI_calc.txt` into         the editor
+    3. Clear editor of all contents, copy and paste the contents of `machine_OfficeScript_for_DI_calc.txt` into the editor
     4. Save and run the script, a completion message will appear if script was successfully executed.
 
 
 ### 3.4. Process Kinematic Data in Excel
 
     1. Open `compiled_kinematics.xlsx` in Excel.
-    2. Go to Developer tab → Visual Basic under Code section. A separate Microsoft Visual Basic window will now         be  displayed. 
-    3. In this window, on left side locate the  VBAProject (compiled_kinematics.xisx) tree then select       `          ThisWorkbook. Right click ThisWorkbook → Insert → Module. A text window on the right side will now be            displayed.
+    2. Go to Developer tab → Visual Basic under Code section. A separate Microsoft Visual Basic window will now be  displayed. 
+    3. In this window, on left side locate the  VBAProject (compiled_kinematics.xisx) tree then select `ThisWorkbook`. Right click ThisWorkbook → Insert → Module. A text window on the right side will now be displayed.
     4. In the righthand window, copy and paste script within  `VBA_macro_for_kinematics.txt` file into window
-    5. Close the left window then click the Run (▶️) button to execute macro. A message will confirm successful          execution upon completion.
+    5. Close the left window then click the Run (▶️) button to execute macro. A message will confirm successful execution upon completion.
 
 NOTE: Do not have any other Excel files opened during this step
 
