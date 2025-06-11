@@ -12,7 +12,7 @@ Both scoring methods require a Python environment with specific packages install
     2. Open Terminal (macOS/Linux) or Anaconda Prompt (Windows)
     3. To create and activate new Python environment to be used for analysis: 
          conda create -n NORenv python=3.10
-	       conda activate NORenv
+	 conda activate NORenv
     4. Install packages: 
          conda install pandas pillow ffmpeg
          pip install openpyxl av==11
@@ -36,7 +36,7 @@ Place all .csv files into one folder, then:
     2. Open Terminal/Anaconda Prompt and enter the following:
        	 cd /Path/to/csv_folder #replace /Path with full path of .csv-containing directory
          conda activate NORenv		
-	       python manual_DI_format.py -o manual_output.xlsx -p -v #replace `manual_output` with desired filename
+	 python manual_DI_format.py -o manual_output.xlsx -p -v #replace `manual_output` with desired filename
 
 NOTE: Excel sheet names in the resulting manual_output.xlsx will mirror .csv filenames. Since Excel limits sheet names to 31 characters, shorten filename if necessary.
 
@@ -98,8 +98,8 @@ This generates `compiled_behavior.xlsx` (containing frame numbers of all object 
          cd /Path/to/compiled_behavior.xlsx
          conda activate NORenv
       	 python machine_DI_format.py 
-	         --input "/Path/to/compiled_behavior.xlsx" \
-  	       --output "/Path/to/output_file.xlsx"
+	   --input "/Path/to/compiled_behavior.xlsx" \
+  	   --output "/Path/to/output_file.xlsx"
 
 #### 3.3.2. Calculate DI in Excel
 
@@ -131,7 +131,6 @@ If machine-scored results differ from manual scoring this is a great place to st
     - Video Processing
     - Image Processing
 * `Obj1` and `Obj2` BehaviorDEPOT-analyzed directories with source videos in all subfolders
-
 
 ### 4.1. Create Labeled Videos
 
@@ -167,8 +166,7 @@ This will create a new folder within present working directory that contains cro
 
 A message will confirm when the overlay is complete
 NOTE: The behavior labels were sized to fit videos with dimensions of 380x380. If your video dimensions differ, steps 4.1 and 4.2.a will vary slightly:
-    4.1: modify `FontSize` within `machine_processAllVideosObj#.m` codes (remember to modify both Obj1 and Obj2 scripts).
-         modify positions of labels by replacing x-and-y coordinates listed within `frame = insertText`
+    4.1: within `machine_processAllVideosObj#.m` codes modify `FontSize` and x-and-y coordinates listed within           `frame = insertText` to modify label size and position respectively. 
     4.2.a: modify crop dimensions used to reflect changes in 4.1.
 
 
