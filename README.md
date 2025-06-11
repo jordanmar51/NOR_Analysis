@@ -1,6 +1,6 @@
 # NOR_Analysis
 
-This repository provides protocols for both manual and machine scoring of NOR (Novel Object Recognition) data. All code used for each scoring method can be found within respective manual or machine folders. Follow the steps below to set up your environment and run the analyses.
+This repository provides protocols for both manual and automated scoring of NOR (Novel Object Recognition) data. All code used for each scoring method can be found within respective manual or automated folders. Follow the steps below to set up your environment and run the analyses.
 
 ---
 
@@ -52,7 +52,7 @@ NOTE: Excel sheet names in the resulting `manual_output.xlsx` will mirror .csv f
 
 ---
 
-## 3. Machine Scoring Method
+## 3. automated Scoring Method
 
 ### Prerequisites
 * NORenv
@@ -79,11 +79,11 @@ Since Excel limits sheet names to 31 characters, shorten folder names if necessa
 
 ### 3.2. Extract Behavior & Kinematics Data from .mat data files
 
-    1. Save `machine_extract_behavior_kinematics.m` MATLAB code in directory containing BehaviorDEPOT-analyzed data.
+    1. Save `auto_extract_behavior_kinematics.m` MATLAB code in directory containing BehaviorDEPOT-analyzed data.
     2. Open MATLAB, locate MATLAB File Explorer and find analyzed directory 
     3. Right-click directory → Add to Path → Selected Folders and Subfolders
     4. Run the script by typing the following into MATLAB command window, replace `parentDir` with the full path of analyzed directory:  
-	     machine_extract_behavior_kinematics(parentDir)
+	     auto_extract_behavior_kinematics(parentDir)
     5. Select analyzed directory when prompted, a completion message will be displayed upon successful execution of script.
 
 This generates `compiled_behavior.xlsx` (containing frame numbers of all object exploration bouts for objects 1 & 2) and `compiled_kinematics.xlsx` (containing extracted total distance traveled, average velocities, and average accelerations from head and midback smoothed keypoint-tracking data) Excel files. If other or additional data points are to be extracted modify text under `T_kinematics = table()` within `extract_behavior_kinematics.m` code.
@@ -92,11 +92,11 @@ This generates `compiled_behavior.xlsx` (containing frame numbers of all object 
 
 #### 3.3.1. Combine Obj1 and Obj2 Data 
 
-    1. Save `machine_DI_format.py` in same directory as `compiled_behavior.xlsx`.
+    1. Save `auto_DI_format.py` in same directory as `compiled_behavior.xlsx`.
     2. Open Terminal/Anaconda Prompt and enter the following (replace '/Path/' sections with correct full paths of input/output files):
          cd /Path/to/compiled_behavior.xlsx
          conda activate NORenv
-      	 python machine_DI_format.py 
+      	 python auto_DI_format.py 
 	   --input "/Path/to/compiled_behavior.xlsx" \
   	   --output "/Path/to/output_file.xlsx"
 
@@ -104,7 +104,7 @@ This generates `compiled_behavior.xlsx` (containing frame numbers of all object 
 
     1. Open output_file.xlsx in Excel
     2. Go to the Automate tab → Click New Script in Scripting Tools section
-    3. Clear editor of all contents, copy and paste the contents of `machine_OfficeScript_for_DI_calc.txt` into the editor
+    3. Clear editor of all contents, copy and paste the contents of `auto_OfficeScript_for_DI_calc.txt` into the editor
     4. Save and run the script, a completion message will appear if script was successfully executed.
 
 
@@ -120,9 +120,9 @@ NOTE: Do not have any other Excel files opened during this step
 
 ---
 
-## 4. Visualize Machine-Scored Behavior
-These steps overlay the smoothed keypoint tracking data (from nose, head, and tailpoint) and behavior label indicating object exploration was detected using machine-scoring method.
-If machine-scored results differ from manual scoring this is a great place to start. 
+## 4. Visualize automated-Scored Behavior
+These steps overlay the smoothed keypoint tracking data (from nose, head, and tailpoint) and behavior label indicating object exploration was detected using automated-scoring method.
+If automated-scored results differ from manual scoring this is a great place to start. 
 
 ### Prerequisites
 * NORenv
@@ -134,11 +134,11 @@ If machine-scored results differ from manual scoring this is a great place to st
 
 ### 4.1. Create Labeled Videos
 
-    1. Save `machine_processAllVideosObj1.m` MATLAB code within the `Obj1` directory.
+    1. Save `auto_processAllVideosObj1.m` MATLAB code within the `Obj1` directory.
     2. Add `Obj1` directory to MATLAB Path (as done in 3.2.2 - 3.2.3).
     3. Open `Obj1` directory in File Explorer and type following into MATLAB command window, replace `parentDir` with the full path of `Obj1` directory:
-	       machine_processAllVideosObj1(parentDir)
-    4. Repeat steps 4.1.1 - 4.1.3, this time saving `machine_processAllVideosObj2.m` MATLAB code in `Obj2` directory.
+	       auto_processAllVideosObj1(parentDir)
+    4. Repeat steps 4.1.1 - 4.1.3, this time saving `auto_processAllVideosObj2.m` MATLAB code in `Obj2` directory.
 
 This step will add `Explore_Obj1`/ `Explore_Obj2` upper corner labels over video frames whenever object exploration was detected.
 
@@ -147,7 +147,7 @@ This step will add `Explore_Obj1`/ `Explore_Obj2` upper corner labels over video
 #### 4.2.a. Crop `Explore_Obj2` Labels 
        	  
     1. Create a directory containing full-sized `Explore_Obj2`-labeled videos.
-    2. Open Terminal/Anaconda Prompt and enter the following (replace '/Path/' with correct full path of video          directory):
+    2. Open Terminal/Anaconda Prompt and enter the following (replace '/Path/' with correct full path of video directory):
          cd /Path/to/Explore_Obj2_videoDirectory
          conda activate NORenv
          mkdir -p cropped_videos
@@ -159,15 +159,14 @@ This will create a new folder within present working directory that contains cro
 
 #### 4.2.b. Overlay Cropped `Explore_Obj2` Labels onto `Explore_Obj1` Videos
 
-    1. Combine cropped `Explore_Obj2` labels and `Explore_Obj1`-labeled videos into single directory, save `machine_overlay_object_on_scene.m` MATLAB code in same directory.
-    2. Open MATLAB and add `Explore_Obj#`-labeled video directory to MATLAB Path (as done in 3.2.2 - 3.2.3).
-    3. Enter following command into MATLAB command window, replace `parentDir` with full path of `Explore_Obj#`-labeled video directory: 
-         machine_overlay_object_on_scene(parentDir)
+    1. Combine cropped `Explore_Obj2` labels and `Explore_Obj1`-labeled videos into single directory, save                                   `auto_overlay_object_on_scene.m` MATLAB code in same directory.
+    2. Add `Explore_Obj#`-labeled video directory to MATLAB Path (as done in 3.2.2 - 3.2.3).
+    3. Enter following command into MATLAB command window: 
+         auto_overlay_object_on_scene
+    4. Select labeled video directory when promted and allow script to run, a completion message will be displayed upon successful           execution.	 
 
-A message will confirm when the overlay is complete
-
-NOTE: The behavior labels were sized to fit videos with dimensions of 380x380. If your video dimensions differ, steps 4.1 and 4.2.a will vary slightly:
-    4.1: within `machine_processAllVideosObj#.m` codes modify `FontSize` and x-and-y coordinates listed within `frame = insertText` to modify label size and position respectively. 
+NOTE: The behavior labels were sized to fit videos with dimensions of 380x380. If your video dimensions differ, steps 4.1 and 4.2.a         will vary slightly:
+    4.1: within `auto_processAllVideosObj#.m` codes: modify `FontSize` and x-and-y coordinates listed within `frame = insertText` to           modify label size and position respectively. 
     4.2.a: modify crop dimensions to reflect changes in 4.1.
 
 
