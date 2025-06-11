@@ -12,7 +12,7 @@ Both scoring methods require a Python environment with specific packages install
     2. Open Terminal (macOS/Linux) or Anaconda Prompt (Windows)
     3. To create and activate new Python environment to be used for analysis: 
          conda create -n NORenv python=3.10
-	 conda activate NORenv
+	  conda activate NORenv
     4. Install packages: 
          conda install pandas pillow ffmpeg
          pip install openpyxl av==11
