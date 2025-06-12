@@ -54,6 +54,8 @@ NOTE: Excel sheet names in the resulting `manual_output.xlsx` will mirror .csv f
 
 ## 3. automated Scoring Method
 
+The DLC model used in this protocol can be downloaded from this link: https://drive.google.com/drive/folders/1xnnoJec20t-z3MlZzoNtM3rGG4KqjDUb?usp=sharing
+
 ### Prerequisites
 * NORenv
 * MATLAB with required Toolboxes:
