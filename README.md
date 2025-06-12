@@ -170,4 +170,4 @@ NOTE: The behavior labels were sized to fit videos with dimensions of 380x380. I
     4.2.a: modify crop dimensions to reflect changes in 4.1.
 
 
-Please cite "A protocol to assess time-of-day-dependent learning and memory in mice using the Novel Object Recognition test" (Update when published)
+Please cite Mar et al 2025 (Update when published)
