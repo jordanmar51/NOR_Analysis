@@ -10,15 +10,13 @@ Both scoring methods require a Python environment with specific packages install
 
     1. Download and install miniconda 
     2. Open Terminal (macOS/Linux) or Anaconda Prompt (Windows)
-    3. To create and activate new Python environment to be used for analysis: 
+    3. To create, activate, then install required packages in the new Python environment to be used for analysis: 
          conda create -n NORenv python=3.10 
          conda activate NORenv
-    4. Install packages: 
-        conda install pandas pillow ffmpeg numpy openpyxl av==11
+         conda install pandas pillow ffmpeg numpy openpyxl av==11
 
 
-When required, this environment will be referred to as `NORenv` from this point forward and must be activated by entering following into Terminal/Anaconda Prompt: 
-	 conda activate NORenv
+When required, this environment will be referred to as `NORenv` from this point forward and must be activated by entering following into Terminal/Anaconda Prompt:                                                                                                                 conda activate NORenv
 
 ---
 
@@ -35,17 +33,22 @@ Place all .csv files into one folder, then:
 
     1. Save `manual_DI.py` into directory containing .csv files.
     2. Open Terminal/Anaconda Prompt and enter the following:
-	  cd /Path/to/csv_folder #replace /Path with full path of .csv-containing directory					                conda activate NORenv		
-	  python manual_DI.py --full-pipeline -o manual_output.xlsx -v #replace `manual_output` with desired filename
+	
+          cd /Path/to/csv_folder #replace /Path with full path of CSV-containing directory	
+   
+          conda activate NORenv		
+	  
+          python manual_DI.py --full-pipeline -o manual_output.xlsx -v #replace `manual_output` with desired filename
 
 This script will compile CSV files into one Excel (.xlsx) file, format data, then calculate discrimination indexes. The last sheet within the `manual_output.xlsx` file will contain a summary of exploration times for each object, total time spent exploring both objects (TET), and resulting DI for all included CSV files.  
-NOTE: Excel sheet names in the resulting `manual_output.xlsx` will mirror .csv filenames. Since Excel limits sheet names to 31 characters, shorten filename if necessary.
+NOTE: Excel sheet names in the resulting `manual_output.xlsx` will mirror CSV filenames. Since Excel limits sheet names to 31 characters, shorten filename if necessary.
 
 ---
 
-## 3. automated Scoring Method
+## 3. Automated Scoring Method
 
-The DLC model used in this protocol can be downloaded from this link: https://drive.google.com/drive/folders/1xnnoJec20t-z3MlZzoNtM3rGG4KqjDUb?usp=sharing
+The DLC model used in this protocol can be downloaded from this link:
+https://drive.google.com/drive/folders/1xnnoJec20t-z3MlZzoNtM3rGG4KqjDUb?usp=sharing
 
 ### Prerequisites
 * NORenv
@@ -67,7 +70,7 @@ After running BehaviorDEPOT:
     3. Remove `_analyzed` from all subfolder names.
 
 NOTE: `_Obj1` / `_Obj2`  should be appended onto subfolder names before running BehaviorDEPOT analysis in order to ensure smooth execution of below scripts. 
-Excel sheet names in the resulting `compiled_behavior.xlsx` and `compiled_kinematics.xlsx` files will be copied from folder names. 
+Excel sheet names in the resulting 'Compiled_ExplorationBouts.xlsx' and 'Compiled_Kinematics.xlsx' files will be copied from folder names. 
 Since Excel limits sheet names to 31 characters, shorten folder names if necessary.
 
 ### 3.2. Extract Behavior & Kinematics Data from .mat data files
