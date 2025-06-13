@@ -29,16 +29,17 @@ When required, this environment will be referred to as `NORenv` from this point 
 * Microsoft Excel (with Office Scripts enabled)
 * Chronotate-analyzed data in the form of .csv files. Refer to Chronotate GitHub wiki for further guidance (https://github.com/ShumanLab/Chronotate/wiki). 
 
-### 2.1. Compile CSV Files & Format DI Data
+### 2.1. Compile, format, then calculate Discrimination Index (DI)
 
 Place all .csv files into one folder, then:
 
-    1. Save `manual_DI_format.py` into directory containing .csv files.
+    1. Save `manual_DI.py` into directory containing .csv files.
     2. Open Terminal/Anaconda Prompt and enter the following:
        	 cd /Path/to/csv_folder #replace /Path with full path of .csv-containing directory
          conda activate NORenv		
-	 python manual_DI_format.py -o manual_output.xlsx -p -v #replace `manual_output` with desired filename
+	 python manual_DI.py --full-pipeline -o manual_output.xlsx -v #replace `manual_output` with desired filename
 
+This script will compile CSV files into one Excel (.xlsx) file, format data, then calculate discrimination indexes. The last sheet within the `manual_output.xlsx` file will contain a summary of exploration times for each object, total time spent exploring both objects (TET), and resulting DI for all included CSV files.  
 NOTE: Excel sheet names in the resulting `manual_output.xlsx` will mirror .csv filenames. Since Excel limits sheet names to 31 characters, shorten filename if necessary.
 
 ---
