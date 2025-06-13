@@ -14,7 +14,7 @@ Both scoring methods require a Python environment with specific packages install
          conda create -n NORenv python=3.10 
          conda activate NORenv
     4. Install packages: 
-	  conda install pandas pillow ffmpeg numpy openpyxl av==11
+        conda install pandas pillow ffmpeg numpy openpyxl av==11
 
 
 When required, this environment will be referred to as `NORenv` from this point forward and must be activated by entering following into Terminal/Anaconda Prompt: 
@@ -35,7 +35,7 @@ Place all .csv files into one folder, then:
 
     1. Save `manual_DI.py` into directory containing .csv files.
     2. Open Terminal/Anaconda Prompt and enter the following:
-	  cd /Path/to/csv_folder #replace /Path with full path of .csv-containing directory						  conda activate NORenv		
+	  cd /Path/to/csv_folder #replace /Path with full path of .csv-containing directory					                conda activate NORenv		
 	  python manual_DI.py --full-pipeline -o manual_output.xlsx -v #replace `manual_output` with desired filename
 
 This script will compile CSV files into one Excel (.xlsx) file, format data, then calculate discrimination indexes. The last sheet within the `manual_output.xlsx` file will contain a summary of exploration times for each object, total time spent exploring both objects (TET), and resulting DI for all included CSV files.  
